@@ -1,0 +1,17 @@
+#extinct-animal-list {
+  color: darkolivegreen;
+}
+
+#jelly-bellies {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  div {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: blanchedalmond; */
+  }
+}
