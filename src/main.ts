@@ -80,7 +80,7 @@ const getAsoiafCharacterNameByID = async (id: number): Promise<string> => {
 
 const asoiafList = document.getElementById("asoiaf-list") as HTMLUListElement;
 
-for (let i = 0; i < 6; i++) {
+for (let i = 1; i < 6; i++) {
   const randomID = (Math.floor(Math.random() * 2134) + 1);
   const li = document.createElement("li");
   li.innerHTML=`Character #${randomID} is ${await getAsoiafCharacterNameByID(randomID)}.`;
@@ -89,6 +89,13 @@ for (let i = 0; i < 6; i++) {
 
 const jellyBellyurl = 'https://jellybellywikiapi.onrender.com/api/beans';
 
+const getCurrentPage = async (): Promise<string> => {
+  const response = await fetch (jellyBellyurl);
+  const data = await response.json();
+
+  return data.currentPage;
+}
+
 const getJellyBelly = async (index: number): Promise<JellyBelly> => {
   const response = await fetch (jellyBellyurl);
   const data = await response.json();
@@ -96,8 +103,8 @@ const getJellyBelly = async (index: number): Promise<JellyBelly> => {
   return data.items[index];
 }
 
-const jelly = await getJellyBelly(1);
-console.log(`Jelly is ${jelly.flavorName}.`);
+const jelly = await getJellyBelly(0);
+console.log(`Jelly ${0+1} is ${jelly.flavorName}.`);
 
 // const getJellyBellyName = async (index: number): Promise<string> => {
 //   const response = await fetch (jellyBellyurl);
@@ -143,28 +150,18 @@ const renderJellyBelly = async() => {
     img.style.height = 'auto';
     div.appendChild(img);
   }
+  renderPagination();
 }
 
-const displayJellyBellyInfo = async () => {
-  for (let i = 0; i < 6; i++) {
-    const jellyBelly = await getJellyBelly(i);
-    console.log(`Flavor: ${jellyBelly.flavorName}, Image: ${jellyBelly.imageUrl}, Color: ${jellyBelly.backgroundColor}`);
-  }
-};
+const pagination = document.getElementById("pagination") as HTMLDivElement;
 
-displayJellyBellyInfo();
+const renderPagination = async() => {
+  const currentPage = await getCurrentPage();
+  const p = document.createElement("p");
+  p.innerHTML = currentPage;
+  pagination.appendChild(p);
+}
+
+// Länka till Next page / Previous page, med länk till currentPage + 1 och currentPage - 1. Men bara Previous page om currentPage inte är 1. Bara Next page så länge currentPage inte är 12.
 
 renderJellyBelly();
-
-const keanuurl = `https://whoa.onrender.com/whoas/random`;
-
-const getRandomKeanuWhoa = async (): Promise<string> => {
-  const response = await fetch (keanuurl);
-  const data = await response.json();
-
-  // console.log('API Response:', data);
-
-  return data[0].movie;
-}
-
-console.log(`This Keanu whoa comes from ${await getRandomKeanuWhoa()}.`);
