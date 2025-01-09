@@ -116,7 +116,11 @@ const renderJellyBelly = async (pageIndex: number) => {
     const jellyBelly = data.items[i];
 
     const div = document.createElement("div");
-    div.style.backgroundColor = jellyBelly.backgroundColor;
+    if (!jellyBelly.backgroundColor || jellyBelly.backgroundColor.trim() === "" || "#" ) {
+      div.style.backgroundColor = "#ffebcd";
+    } else {
+      div.style.backgroundColor = jellyBelly.backgroundColor;
+    }
     div.style.padding = '10px';
     div.style.margin = '5px';
     jellyBellyDiv.appendChild(div);
