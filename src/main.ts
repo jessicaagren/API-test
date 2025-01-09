@@ -2,6 +2,11 @@ import { AsoiafCharacter } from './asoiafType';
 import { JellyBelly, JellyBellyResponse } from './jellyBellyType';
 import './style.css'
 
+// ============================================
+// ==================EXTINCT===================
+// ==================ANIMALS===================
+// ============================================
+
 // const getRandomMeal = async (): Promise<string> => {
 //   const response = await fetch("http://www.themealdb.com/api/json/v1/1/random.php");
 //   const data = await response.json();
@@ -31,12 +36,6 @@ const getRandomExtinctAnimal = async(): Promise<{ extinctName: string, lastRecor
 //   }
 
 const extinctAnimalList = document.getElementById("extinct-animal-list") as HTMLUListElement;
-  
-for (let i = 1; i < 6; i++) {
-  const li = document.createElement("li");
-  getRandomExtinctAnimal().then(({ extinctName, lastRecord }) => li.innerHTML=`Extinct animal ${i} is ${extinctName} and was last recorded in ${lastRecord}.`);
-  extinctAnimalList.appendChild(li);
-}
 
 const getExtinctAnimalByNumber = async (): Promise<{ number: number; name: string }> => {
   const randomNumber = Math.floor(Math.random() * 804) + 1;
@@ -49,12 +48,22 @@ const getExtinctAnimalByNumber = async (): Promise<{ number: number; name: strin
     }
 }
 
-for (let i = 1; i < 6; i++) {
-  getExtinctAnimalByNumber()
-    .then(({ number, name }) => {
-      console.log(`Extinct animal #${number} is ${name}.`);
-    });
-}
+// for (let i = 1; i < 6; i++) {
+//   getExtinctAnimalByNumber()
+//     .then(({ number, name }) => {
+//       console.log(`Extinct animal #${number} is ${name}.`);
+//     });
+// }
+
+// for (let i = 1; i < 6; i++) {
+//   const li = document.createElement("li");
+//   getRandomExtinctAnimal().then(({ extinctName, lastRecord }) => li.innerHTML=`Extinct animal ${i} is ${extinctName} and was last recorded in ${lastRecord}.`);
+//   extinctAnimalList.appendChild(li);
+// }
+
+// ============================================
+// ==================ASOIAF====================
+// ============================================
 
 const asoiafurl = "https://www.anapioficeandfire.com/api/";
 
@@ -72,20 +81,18 @@ const getAsoiafCharacterNameByID = async (id: number): Promise<string> => {
   return character;
 }
 
-// const getAsoiafCharacterBookByID = async (id: number): Promise<string[]> => {
-//   const books: string[] = (await getAsoiafCharacterByID(id)).books;
-
-//   return books[];
-// }
-
 const asoiafList = document.getElementById("asoiaf-list") as HTMLUListElement;
 
-for (let i = 1; i < 6; i++) {
-  const randomID = (Math.floor(Math.random() * 2134) + 1);
-  const li = document.createElement("li");
-  li.innerHTML=`Character #${randomID} is ${await getAsoiafCharacterNameByID(randomID)}.`;
-  asoiafList.appendChild(li);
-}
+// for (let i = 1; i < 6; i++) {
+//   const randomID = (Math.floor(Math.random() * 2134) + 1);
+//   const li = document.createElement("li");
+//   li.innerHTML=`Character #${randomID} is ${await getAsoiafCharacterNameByID(randomID)}.`;
+//   asoiafList.appendChild(li);
+// }
+
+// ============================================
+// ================JELLYBELLY==================
+// ============================================
 
 const jellyBellyurl = 'https://jellybellywikiapi.onrender.com/api/beans';
 
@@ -104,7 +111,6 @@ const getTotalPages = async (): Promise<number> => {
   return data.totalPages;
 };
 
-
 const jellyBellyDiv = document.getElementById("jelly-bellies") as HTMLDivElement;
 
 const renderJellyBelly = async (pageIndex: number) => {
@@ -116,7 +122,7 @@ const renderJellyBelly = async (pageIndex: number) => {
     const jellyBelly = data.items[i];
 
     const div = document.createElement("div");
-    if (!jellyBelly.backgroundColor || jellyBelly.backgroundColor.trim() === "" || "#" ) {
+    if (!jellyBelly.backgroundColor || jellyBelly.backgroundColor.trim() === "" || jellyBelly.backgroundColor.trim() === "#" ) {
       div.style.backgroundColor = "#ffebcd";
     } else {
       div.style.backgroundColor = jellyBelly.backgroundColor;
