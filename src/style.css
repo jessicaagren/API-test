@@ -2,6 +2,12 @@
   color: darkolivegreen;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 article {
   display: flex;
   justify-content: space-around;
@@ -11,6 +17,7 @@ article {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   div {
     padding: 20px;

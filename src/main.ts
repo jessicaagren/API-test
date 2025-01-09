@@ -1,5 +1,5 @@
 import { AsoiafCharacter } from './asoiafType';
-import { JellyBelly } from './jellyBellyType';
+import { JellyBelly, JellyBellyResponse } from './jellyBellyType';
 import './style.css'
 
 // const getRandomMeal = async (): Promise<string> => {
@@ -89,50 +89,31 @@ for (let i = 1; i < 6; i++) {
 
 const jellyBellyurl = 'https://jellybellywikiapi.onrender.com/api/beans';
 
-const getCurrentPage = async (): Promise<string> => {
-  const response = await fetch (jellyBellyurl);
-  const data = await response.json();
+const getPage = async (pageIndex: number): Promise<JellyBellyResponse> => {
+  const response = await fetch(`${jellyBellyurl}?pageIndex=${pageIndex}&pageSize=10`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const data: JellyBellyResponse = await response.json();
+  return data;
+};
 
-  return data.currentPage;
-}
+const getTotalPages = async (): Promise<number> => {
+  const response = await fetch(`${jellyBellyurl}?pageIndex=1&pageSize=10`);
+  const data: JellyBellyResponse = await response.json();
+  return data.totalPages;
+};
 
-const getJellyBelly = async (index: number): Promise<JellyBelly> => {
-  const response = await fetch (jellyBellyurl);
-  const data = await response.json();
-
-  return data.items[index];
-}
-
-const jelly = await getJellyBelly(0);
-console.log(`Jelly ${0+1} is ${jelly.flavorName}.`);
-
-// const getJellyBellyName = async (index: number): Promise<string> => {
-//   const response = await fetch (jellyBellyurl);
-//   const data = await response.json();
-
-//   return data.items[index].flavorName;
-// }
-
-
-// const getJellyBellyImage = async (index: number): Promise<string> => {
-//   const response = await fetch (jellyBellyurl);
-//   const data = await response.json();
-  
-//   return data.items[index].imageUrl;
-// }
-
-// const getJellyBellyColor = async (index: number): Promise<string> => {
-//   const response = await fetch (jellyBellyurl);
-//   const data = await response.json();
-  
-//   return data.items[index].backgroundColor;
-// }
 
 const jellyBellyDiv = document.getElementById("jelly-bellies") as HTMLDivElement;
 
-const renderJellyBelly = async() => {
-  for (let i = 0; i < 10; i++) {
-    const jellyBelly = await getJellyBelly(i);
+const renderJellyBelly = async (pageIndex: number) => {
+  jellyBellyDiv.innerHTML = "";
+
+  const data = await getPage(pageIndex);
+
+  for (let i = 0; i < data.items.length; i++) {
+    const jellyBelly = data.items[i];
 
     const div = document.createElement("div");
     div.style.backgroundColor = jellyBelly.backgroundColor;
@@ -150,18 +131,36 @@ const renderJellyBelly = async() => {
     img.style.height = 'auto';
     div.appendChild(img);
   }
-  renderPagination();
+  await renderPagination(pageIndex);
 }
+
+const updatePage = async (newPage: number) => {
+  await renderJellyBelly(newPage);
+};
+
+const renderPagination = async (currentPage: number) => {
+  const totalPages = await getTotalPages();
+  pagination.innerHTML = "";
+
+  if (currentPage > 1) {
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Previous";
+    prevButton.onclick = () => updatePage(currentPage - 1);
+    pagination.appendChild(prevButton);
+  }
+
+  const pageInfo = document.createElement("p");
+  pageInfo.innerHTML = `Page ${currentPage} of ${totalPages}`;
+  pagination.appendChild(pageInfo);
+
+  if (currentPage < totalPages) {
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.onclick = () => updatePage(currentPage + 1);
+    pagination.appendChild(nextButton);
+  }
+};
 
 const pagination = document.getElementById("pagination") as HTMLDivElement;
 
-const renderPagination = async() => {
-  const currentPage = await getCurrentPage();
-  const p = document.createElement("p");
-  p.innerHTML = currentPage;
-  pagination.appendChild(p);
-}
-
-// Länka till Next page / Previous page, med länk till currentPage + 1 och currentPage - 1. Men bara Previous page om currentPage inte är 1. Bara Next page så länge currentPage inte är 12.
-
-renderJellyBelly();
+renderJellyBelly(1);
