@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+}
+
 #extinct-animal-list {
   color: darkolivegreen;
 }
@@ -6,11 +10,45 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* margin: 20px; */
+  height: 100vh;
+  background-image: linear-gradient(yellow, pink);
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: lighter;
+  h2 {
+    color: white;
+    text-shadow: 
+    1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000;
+    margin-bottom: 10px;
+  }
 }
 
-article {
+h1 {
+  margin: 20px 0;
+  font-family: "Praise", serif;
+  font-size: 5rem;
+  color: #EE161F;
+  text-shadow: 
+    1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000;
+}
+
+/* article {
   display: flex;
   justify-content: space-around;
+  border-radius: 5px;
+} */
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  justify-content: center;
 }
 
 #jelly-bellies {
@@ -18,11 +56,35 @@ article {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   gap: 20px;
+  margin-bottom: 20px;
   div {
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 5px;
   }
+}
+
+#pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin: 10px;
+    padding: 5px 10px;
+    height: min-content;
+    background-color: pink;
+    border-radius: 5px;
+    border: 1px solid black;
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
 }

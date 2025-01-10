@@ -98,9 +98,6 @@ const jellyBellyurl = 'https://jellybellywikiapi.onrender.com/api/beans';
 
 const getPage = async (pageIndex: number): Promise<JellyBellyResponse> => {
   const response = await fetch(`${jellyBellyurl}?pageIndex=${pageIndex}&pageSize=10`);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
   const data: JellyBellyResponse = await response.json();
   return data;
 };
@@ -119,7 +116,7 @@ const renderJellyBelly = async (pageIndex: number) => {
   const data = await getPage(pageIndex);
 
   for (let i = 0; i < data.items.length; i++) {
-    const jellyBelly = data.items[i];
+    const jellyBelly: JellyBelly = data.items[i];
 
     const div = document.createElement("div");
     if (!jellyBelly.backgroundColor || jellyBelly.backgroundColor.trim() === "" || jellyBelly.backgroundColor.trim() === "#" ) {
@@ -127,8 +124,6 @@ const renderJellyBelly = async (pageIndex: number) => {
     } else {
       div.style.backgroundColor = jellyBelly.backgroundColor;
     }
-    div.style.padding = '10px';
-    div.style.margin = '5px';
     jellyBellyDiv.appendChild(div);
 
     const h2 = document.createElement("h2");
@@ -137,8 +132,8 @@ const renderJellyBelly = async (pageIndex: number) => {
 
     const img = document.createElement("img");
     img.src = jellyBelly.imageUrl;
-    img.style.maxWidth = '150px';
-    img.style.height = 'auto';
+    img.style.maxWidth = 'auto';
+    img.style.height = '100px';
     div.appendChild(img);
   }
   await renderPagination(pageIndex);
